@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Syst-me_Gestion_Cin-ma.iml" filepath="$PROJECT_DIR$/.idea/Syst-me_Gestion_Cin-ma.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Systeme-Gestion-Cinema/Systeme-Gestion-Cinema.iml" filepath="$PROJECT_DIR$/Systeme-Gestion-Cinema/Systeme-Gestion-Cinema.iml" />
+    </modules>
+  </component>
+</project>
