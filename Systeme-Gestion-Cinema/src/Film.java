@@ -1,9 +1,11 @@
+import java.util.*;
+
 public class Film {
     private int idFilm;
     private String titre;
     private int duree;
     private String categorie;
-   private List<com.cinema.Seance> seances;
+   private List<Seance> seances;
 
 public Film(int idFilm, String titre, int duree, String categorie) {
     this.idFilm = idFilm;
