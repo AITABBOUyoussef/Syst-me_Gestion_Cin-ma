@@ -3,7 +3,7 @@ public class Film {
     private String titre;
     private int duree;
     private String categorie;
-   private List<Seance> seances;
+   private List<com.cinema.Seance> seances;
 
 public Film(int idFilm, String titre, int duree, String categorie) {
     this.idFilm = idFilm;
