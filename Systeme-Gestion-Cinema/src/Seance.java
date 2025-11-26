@@ -10,8 +10,6 @@ public class Seance {
     private Film film;
     private List<Spectateur> spectateursInscrits = new ArrayList<>();
 
-    public Seance() {}
-
     public Seance(int idSeance, LocalDateTime horaire, String salle, int capaciteMax, Film film) {
         this.idSeance = idSeance;
         this.horaire = horaire;
