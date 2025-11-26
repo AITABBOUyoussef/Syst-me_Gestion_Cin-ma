@@ -1,4 +1,3 @@
-package spectator;
 public class Spectateur {
     private int id;
     private String nom;
