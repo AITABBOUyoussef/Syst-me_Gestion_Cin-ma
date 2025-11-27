@@ -1,3 +1,4 @@
+create database CINEMA;
 use CINEMA;
 create table film(
 id int primary key,
