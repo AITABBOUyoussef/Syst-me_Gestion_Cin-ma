@@ -126,7 +126,7 @@ public class Main {
 
     static void ajouterSeance() {
         System.out.print("ID film: ");
-        int filmId = Integer.parseInt(sc.nextLine());
+        int idFilm = Integer.parseInt(sc.nextLine());
 
         System.out.print("Date (YYYY-MM-DD): ");
         String date = sc.nextLine();
@@ -144,7 +144,7 @@ public class Main {
             PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO seance(film_id, date, heure, salle, capacite_max) VALUES (?,?,?,?,?)"
             );
-            ps.setInt(1, filmId);
+            ps.setInt(1, idFilm);
             ps.setString(2, date);
             ps.setString(3, heure);
             ps.setString(4, salle);
@@ -166,7 +166,7 @@ public class Main {
                 System.out.println(
                         new Seance(
                                 rs.getInt("id"),
-                                rs.getInt("film_id"),
+                                rs.getInt("id_Film"),
                                 rs.getString("date"),
                                 rs.getString("heure"),
                                 rs.getString("salle"),
