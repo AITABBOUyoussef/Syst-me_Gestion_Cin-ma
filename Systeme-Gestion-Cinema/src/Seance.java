@@ -1,10 +1,10 @@
 public class Seance {
-    public int id;
-    public int idFilm;
-    public String date;
-    public String heure;
-    public String salle;
-    public int capacite;
+    private int id;
+    private int idFilm;
+    private String date;
+    private String heure;
+    private String salle;
+    private int capacite;
 
     public Seance(int id, int idFilm, String date, String heure, String salle, int capacite) {
         this.id = id;
@@ -15,11 +15,16 @@ public class Seance {
         this.capacite = capacite;
     }
 
+    public int getId() { return id; }
+    public int getIdFilm() { return idFilm; }
+    public String getDate() { return date; }
+    public String getHeure() { return heure; }
+    public String getSalle() { return salle; }
+    public int getCapacite() { return capacite; }
+
     @Override
     public String toString() {
-        return "[" + id + "] Film:" + idFilm
-                + " | " + date + " " + heure
-                + " | Salle:" + salle
-                + " | Capacité:" + capacite;
+        return String.format("[%d] Film:%d | %s %s | Salle:%s | Capacité:%d",
+                id, idFilm, date, heure, salle, capacite);
     }
 }
