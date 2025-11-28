@@ -1,56 +1,227 @@
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.sql.*;
+import java.util.Scanner;
 
 public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Film film1 = new Film(1, "The Godfather", 230, "Crime");
-        Film film2 = new Film(2, "La La Land", 150, "Musical Comedie");
-        Film film3 = new Film(3, "Inception", 210, "Sci-Fi");
 
-        Seance seance1 = new Seance(1, LocalTime.of(18,30)  , "Salle 1", 100, film1);
-        Seance seance2 = new Seance(2, LocalTime.of(22,00), "Salle 2", 100, film2);
-        Seance seance3 = new Seance(3, LocalTime.of(15,20), "Salle 3", 160, film3);
+        boolean exit = false;
 
-        SpectateurManager manager = new SpectateurManager();
-        manager.ajouterSpectateur("Ali", "ali@email.com");
-        manager.ajouterSpectateur("Fatima", "fatima@email.com");
-        manager.ajouterSpectateur("Malak", "Malak@email.com");
-        manager.ajouterSpectateur("Yahya", "yahya@email.com");
+        while (!exit) {
+            System.out.println("\n==== CINEMA SYSTEM ====");
+            System.out.println("1. Ajouter un film");
+            System.out.println("2. Ajouter un spectateur");
+            System.out.println("3. Ajouter une séance");
+            System.out.println("4. Acheter un ticket");
+            System.out.println("5. Afficher films");
+            System.out.println("6. Afficher spectateurs");
+            System.out.println("7. Afficher séances");
+            System.out.println("8. Afficher tickets");
+            System.out.println("0. Quitter");
+            System.out.print("Choix: ");
+
+            int choix = Integer.parseInt(sc.nextLine());
+
+            switch (choix) {
+                case 1 -> ajouterFilm();
+                case 2 -> ajouterSpectateur();
+                case 3 -> ajouterSeance();
+                case 4 -> acheterTicket();
+                case 5 -> afficherFilms();
+                case 6 -> afficherSpectateurs();
+                case 7 -> afficherSeances();
+                case 8 -> afficherTickets();
+                case 0 -> exit = true;
+                default -> System.out.println("Option invalide !");
+            }
+        }
+    }
+
+    static void ajouterFilm() {
+        System.out.print("Titre: ");
+        String titre = sc.nextLine();
+
+        System.out.print("Durée (minutes): ");
+        int duree = Integer.parseInt(sc.nextLine());
+
+        System.out.print("Catégorie: ");
+        String categorie = sc.nextLine();
+
+        try (Connection conn = Database.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO film(titre, duree, categorie) VALUES (?,?,?)"
+            );
+            ps.setString(1, titre);
+            ps.setInt(2, duree);
+            ps.setString(3, categorie);
+            ps.executeUpdate();
+            System.out.println("Film ajouté !");
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
+
+    static void afficherFilms() {
+        try (Connection conn = Database.getConnection()) {
+            ResultSet rs = conn.createStatement()
+                    .executeQuery("SELECT * FROM film");
+
+            System.out.println("\n--- FILMS ---");
+            while (rs.next()) {
+                System.out.println(
+                        new Film(
+                                rs.getInt("id"),
+                                rs.getString("titre"),
+                                rs.getInt("duree"),
+                                rs.getString("categorie")
+                        )
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
+
+    static void ajouterSpectateur() {
+        System.out.print("Nom: ");
+        String nom = sc.nextLine();
+
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+
+        try (Connection conn = Database.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO spectateur(nom,email) VALUES (?,?)"
+            );
+            ps.setString(1, nom);
+            ps.setString(2, email);
+            ps.executeUpdate();
+            System.out.println("Spectateur ajouté !");
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
+
+    static void afficherSpectateurs() {
+        try (Connection conn = Database.getConnection()) {
+            ResultSet rs = conn.createStatement()
+                    .executeQuery("SELECT * FROM spectateur");
+
+            System.out.println("\n--- SPECTATEURS ---");
+            while (rs.next()) {
+                System.out.println(
+                        new Spectateur(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("email")
+                        )
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
+
+    static void ajouterSeance() {
+        System.out.print("ID film: ");
+        int filmId = Integer.parseInt(sc.nextLine());
+
+        System.out.print("Date (YYYY-MM-DD): ");
+        String date = sc.nextLine();
+
+        System.out.print("Heure (HH:MM:SS): ");
+        String heure = sc.nextLine();
+
+        System.out.print("Salle: ");
+        String salle = sc.nextLine();
+
+        System.out.print("Capacité max: ");
+        int capacite = Integer.parseInt(sc.nextLine());
+
+        try (Connection conn = Database.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO seance(film_id, date, heure, salle, capacite_max) VALUES (?,?,?,?,?)"
+            );
+            ps.setInt(1, filmId);
+            ps.setString(2, date);
+            ps.setString(3, heure);
+            ps.setString(4, salle);
+            ps.setInt(5, capacite);
+            ps.executeUpdate();
+            System.out.println("Séance ajoutée !");
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
+
+    static void afficherSeances() {
+        try (Connection conn = Database.getConnection()) {
+            ResultSet rs = conn.createStatement()
+                    .executeQuery("SELECT * FROM seance");
+
+            System.out.println("\n--- SEANCES ---");
+            while (rs.next()) {
+                System.out.println(
+                        new Seance(
+                                rs.getInt("id"),
+                                rs.getInt("film_id"),
+                                rs.getString("date"),
+                                rs.getString("heure"),
+                                rs.getString("salle"),
+                                rs.getInt("capacite_max")
+                        )
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
 
 
-        Ticket ticket1 = new Ticket(1, 50.0, manager.getSpectateurs().get(0), seance1);
-        Ticket ticket2 = new Ticket(2, 45.0, manager.getSpectateurs().get(1), seance2);
-        Ticket ticket3 = new Ticket(3, 45.0, manager.getSpectateurs().get(2), seance2);
-        Ticket ticket4 = new Ticket(4, 70.0, manager.getSpectateurs().get(3), seance3);
+    static void acheterTicket() {
+        System.out.print("ID spectateur: ");
+        int spectateurId = Integer.parseInt(sc.nextLine());
 
+        System.out.print("ID séance: ");
+        int seanceId = Integer.parseInt(sc.nextLine());
 
-        System.out.println(film1);
-        System.out.println(film2);
-        System.out.println(film3);
-        System.out.println(seance1);
+        System.out.print("Prix: ");
+        double prix = Double.parseDouble(sc.nextLine());
 
-        System.out.println(seance2);
-        System.out.println(seance3);
-        System.out.println(ticket1);
-        seance1.ajouterTicket(ticket1);
-        System.out.println(ticket2);
-        seance2.ajouterTicket(ticket2);
+        try (Connection conn = Database.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO ticket(spectateur_id,seance_id,prix) VALUES (?,?,?)"
+            );
+            ps.setInt(1, spectateurId);
+            ps.setInt(2, seanceId);
+            ps.setDouble(3, prix);
+            ps.executeUpdate();
+            System.out.println("Ticket acheté !");
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+    }
 
-        System.out.println(ticket3);
-        seance2.ajouterTicket(ticket3);
-        System.out.println(ticket4);
+    static void afficherTickets() {
+        try (Connection conn = Database.getConnection()) {
+            ResultSet rs = conn.createStatement()
+                    .executeQuery("SELECT * FROM ticket");
 
-
-
-
-        seance3.ajouterTicket(ticket4);
-
-
-        System.out.println("Spectateurs dans séance 1: " + seance1.getNombreSpectateursInscrits());
-        System.out.println("Spectateurs dans séance 2: " + seance2.getNombreSpectateursInscrits());
-        System.out.println("Spectateurs dans séance 3: " + seance3.getNombreSpectateursInscrits());
-
-
-        manager.afficherSpectateurs();
+            System.out.println("\n--- TICKETS ---");
+            while (rs.next()) {
+                System.out.println(
+                        new Ticket(
+                                rs.getInt("id"),
+                                rs.getInt("spectateur_id"),
+                                rs.getInt("seance_id"),
+                                rs.getDouble("prix")
+                        )
+                );
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
     }
 }
