@@ -174,7 +174,7 @@ public class Main {
                 System.out.println(
                         new Seance(
                                 rs.getInt("id"),
-                                rs.getInt("id_Film"),
+                                rs.getInt("film_id"),
                                 rs.getString("date"),
                                 rs.getString("heure"),
                                 rs.getString("salle"),

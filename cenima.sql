@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS CINEMA;
-CREATE DATABASE CINEMA;
-USE CINEMA;
+DROP DATABASE IF EXISTS cinema;
+CREATE DATABASE cinema ;
+USE cinema;
 
 CREATE TABLE film (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -17,12 +17,12 @@ CREATE TABLE spectateur (
 
 CREATE TABLE seance (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    id_Film INT,
+    film_id INT,
     date DATE,
     heure TIME,
     salle VARCHAR(20),
     capacite_max INT,
-    FOREIGN KEY (id_Film) REFERENCES film(id)
+    FOREIGN KEY (film_id) REFERENCES film(id)
 );
 
 CREATE TABLE ticket (
