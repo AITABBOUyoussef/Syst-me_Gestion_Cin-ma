@@ -1,2 +1,2 @@
 # UML de Systeme Gestion Cinema
-![UML_cinema](https://github.com/user-attachments/assets/b67fa4e2-f21a-495f-8905-4f7f392d2ba6)
+![final_cinema_UML](https://github.com/user-attachments/assets/3817fbd2-2e41-4032-bb7d-c2692eedec31)
